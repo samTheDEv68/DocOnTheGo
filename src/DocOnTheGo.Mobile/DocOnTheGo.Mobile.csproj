@@ -1,0 +1,49 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0-android</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>DocOnTheGo.Mobile</RootNamespace>
+    <UseMaui>true</UseMaui>
+    <SingleProject>true</SingleProject>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+
+    <ApplicationTitle>Doc On The Go</ApplicationTitle>
+    <ApplicationId>com.doconthego.app</ApplicationId>
+    <ApplicationDisplayVersion>1.0.0</ApplicationDisplayVersion>
+    <ApplicationVersion>1</ApplicationVersion>
+
+    <SupportedOSPlatformVersion>24.0</SupportedOSPlatformVersion>
+    <TargetPlatformVersion>35</TargetPlatformVersion>
+
+    <!-- One installable APK (not an .aab) so it can be side-loaded for testing. -->
+    <AndroidPackageFormat>apk</AndroidPackageFormat>
+    <RuntimeIdentifiers>android-arm64;android-arm;android-x64</RuntimeIdentifiers>
+    <MauiStrictXamlCompilation>true</MauiStrictXamlCompilation>
+  </PropertyGroup>
+
+  <!-- Release signing: pass these on the command line or via CI secrets (see docs/Required-Inputs.pdf).
+       Without them the build signs with the debug key, which is fine for testing but not for Play Store. -->
+  <PropertyGroup Condition="'$(Configuration)' == 'Release' And '$(AndroidSigningKeyStore)' != ''">
+    <AndroidKeyStore>true</AndroidKeyStore>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#1E6F78" />
+    <MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#1E6F78" BaseSize="128,128" />
+    <MauiImage Include="Resources\Images\*" />
+    <MauiFont Include="Resources\Fonts\*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DocOnTheGo.Core\DocOnTheGo.Core.vbproj" />
+    <!-- Models are serialized with reflection-based System.Text.Json; keep them whole when trimming. -->
+    <TrimmerRootAssembly Include="DocOnTheGo.Core" RootMode="All" />
+  </ItemGroup>
+
+</Project>

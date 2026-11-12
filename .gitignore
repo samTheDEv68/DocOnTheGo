@@ -1,0 +1,14 @@
+bin/
+obj/
+.vs/
+*.user
+*.keystore
+*.jks
+uploads-data/
+appsettings.Development.json
+!src/DocOnTheGo.Api/appsettings.Development.json
+.idea/
+TestResults/
+out/
+dist/
+__pycache__/

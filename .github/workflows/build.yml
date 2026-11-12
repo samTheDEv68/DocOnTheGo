@@ -1,0 +1,54 @@
+name: Build
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      HAS_KEYSTORE: ${{ secrets.ANDROID_KEYSTORE_BASE64 != '' }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.0.x
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Install .NET Android workload
+        run: dotnet workload install maui-android
+
+      - name: Test VB.NET core
+        run: dotnet test tests/DocOnTheGo.Core.Tests
+
+      - name: Build VB.NET API and admin console
+        run: |
+          dotnet build src/DocOnTheGo.Api -c Release
+          dotnet build src/DocOnTheGo.Admin -c Release
+
+      - name: Decode release keystore
+        if: env.HAS_KEYSTORE == 'true'
+        env:
+          KEYSTORE_B64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+        run: echo "$KEYSTORE_B64" | base64 -d > release.keystore
+
+      - name: Build APK
+        env:
+          ANDROID_HOME: ${{ env.ANDROID_SDK_ROOT }}
+          KEYSTORE: ${{ env.HAS_KEYSTORE == 'true' && 'release.keystore' || '' }}
+          KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          KEY_PASS: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: ./build-apk.sh
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: DocOnTheGo-apk
+          path: dist/DocOnTheGo.apk

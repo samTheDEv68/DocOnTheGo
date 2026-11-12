@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net9.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <RootNamespace>DocOnTheGo.Admin</RootNamespace>
+    <StartupObject>DocOnTheGo.Admin.Program</StartupObject>
+    <OptionStrict>On</OptionStrict>
+    <OptionInfer>On</OptionInfer>
+    <MyType>Empty</MyType>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DocOnTheGo.Core\DocOnTheGo.Core.vbproj" />
+  </ItemGroup>
+</Project>

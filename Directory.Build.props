@@ -1,0 +1,8 @@
+<Project>
+  <PropertyGroup>
+    <Nullable Condition="'$(Language)' == 'C#'">enable</Nullable>
+    <LangVersion Condition="'$(Language)' == 'C#'">latest</LangVersion>
+    <Authors>Doc On The Go</Authors>
+    <Product>Doc On The Go</Product>
+  </PropertyGroup>
+</Project>
